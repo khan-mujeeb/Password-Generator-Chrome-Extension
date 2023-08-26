@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Password Genrator</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        />
+
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="password-generator-container">
+                <h1>Password Generator</h1>
+
+                <div class="password">
+                    <input  type="text" readonly placeholder="Password" id="password-genrated"></input>
+
+                    <span id="copy-message"></span>
+                    <img src="./img/copy-regular.svg" alt="" width="20"  id="copy-btn" />
+                </div>
+
+                
+                <div class="password-setting-box">
+
+                    <!-- length slider  -->
+                    <div class="password-length">
+                        <h2>Password Length</h2>
+                        <p id="lenght">15</p>
+                    </div>
+
+                    <input  id="length-slider" type="range" min="8" max="20" step="1" />
+
+                    
+                    <div class="form">
+                        <div class="checkbox">
+                            <input
+                                type="checkbox"
+                                name="lowercase"
+                                id="lowercase"
+                            />
+                            <label for="lowercase"
+                                >Include Lowercase Letters</label
+                            >
+                        </div>
+
+                        <div class="checkbox">
+                            <input
+                                type="checkbox"
+                                name="upercase"
+                                id="upercase"
+                            />
+                            <label for="upercase"
+                                >Include Upercase Letters</label
+                            >
+                        </div>
+
+                        <div class="checkbox">
+                            <input type="checkbox" name="number" id="number" />
+                            <label for="numbers">Include Numbers</label>
+                        </div>
+
+                        <div class="checkbox">
+                            <input
+                                type="checkbox"
+                                name="special"
+                                id="special"
+                            />
+                            <label for="special"
+                                >Include Special Charachters</label
+                            >
+                        </div>
+
+                        <button id="btn">Generate Password</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
