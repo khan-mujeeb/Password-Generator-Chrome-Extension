@@ -10,6 +10,8 @@ const uperCasecChar = document.getElementById("upercase");
 const numberChar = document.getElementById("number");
 const specialCaseChar = document.getElementById("special");
 
+const strengthPb = document.getElementById("strength");
+
 //  variable initilization
 let currentPasswordLength = 8;
 const symbolList = "~`!@#$%^&*()_-+={[}]|:;'<,>.?/";
@@ -36,8 +38,12 @@ passwordLengthSlider.addEventListener("input", (e) => {
 // get random int
 function getRandomInt(min, max) {
     let rand = Math.random();
+
+    // 0.25 * 9  = 2.25 + 0
     let x = Math.floor(rand * (max - min) + min);
-    console.log("rand is " + rand + " and random " + x);
+    console.log(
+        "rand is " + rand + " and random " + x + " min " + min + " max " + max
+    );
     return x;
 }
 
@@ -54,9 +60,9 @@ function getLowerCase() {
 
 // get uper case
 function getUperCase() {
-    let temp = String.fromCharCode(getRandomInt(65, 95));
+    var temp = String.fromCharCode(getRandomInt(65, 91));
     console.log("char is " + temp);
-    return String.fromCharCode(getRandomInt(65, 95));
+    return temp;
 }
 // get symbols
 function getSymbols() {
@@ -67,38 +73,37 @@ function getSymbols() {
 
 // get password strength
 function calculatePasswordStrength(password) {
-    const lengthScore = Math.min(password.length / 8, 1); // Normalize length to a score between 0 and 1
-
-    // Check for character types
-    const hasUppercase = /[A-Z]/.test(password);
-    const hasLowercase = /[a-z]/.test(password);
-    const hasNumbers = /\d/.test(password);
-    const hasSpecialCharacters = /[\W_]/.test(password);
-
-    const characterTypes = [
-        hasUppercase,
-        hasLowercase,
-        hasNumbers,
-        hasSpecialCharacters,
-    ];
-    const characterTypeScore = characterTypes.filter(Boolean).length / 4;
-
-    // Calculate overall strength score
-    const strengthScore = (lengthScore + characterTypeScore) / 2;
-
-    // Map the strength score to a descriptive label
-    let strengthLabel = "Weak";
-    if (strengthScore > 0.6) {
-        strengthLabel = "Strong";
-    } else if (strengthScore > 0.3) {
-        strengthLabel = "Moderate";
+    let percentage = 0;
+    const specialChars = /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.\/?~]/;
+    const ownWeight = 20;
+    
+    if (/\d/.test(password)) {
+        percentage += ownWeight;
+    }
+    if (/.*[a-z].*/.test(password)) {
+        percentage += ownWeight;
+    }
+    if (/.*[A-Z].*/.test(password)) {
+        percentage += ownWeight;
+    }
+    if (specialChars.test(password)) {
+        percentage += ownWeight;
+    }
+    if (password.length >= 8) {
+        percentage += ownWeight;
     }
 
     return {
-        score: strengthScore,
-        label: strengthLabel,
-    };
+        score: percentage/100,
+        label: ""
+    }
 }
+
+// Driver code
+const input_password = "GeeksforGeeks!@12";
+const passwordStrengthPercentage = calculatePasswordStrength(input_password);
+console.log(`Password strength percentage: ${passwordStrengthPercentage}`);
+
 
 // copy password
 async function copyContent() {
@@ -110,7 +115,7 @@ async function copyContent() {
     }
 
     // make copy span visible
-    copyMessage.checkVisibility.classList.add("active");
+    copyMessage.classList.add("active");
 
     // 2s time interval
     setTimeout(() => {
@@ -157,30 +162,42 @@ function shuffelPassword(array) {
 generateBtn.addEventListener("click", () => {
     passowrd = "";
 
-    if (checkCount == 0) return;
+    if (checkCount == 0) {
+        passwordGenrated.value = passowrd;
+        return;
+    }
 
     let functionArr = [];
 
     if (uperCasecChar.checked) {
-        functionArr.push(getUperCase());
+        functionArr.push(getUperCase);
     }
     if (lowerCaseChar.checked) {
-        functionArr.push(getLowerCase());
+        functionArr.push(getLowerCase);
     }
-    if (numberChar.checked) functionArr.push(getRandomNumber());
+    if (numberChar.checked) functionArr.push(getRandomNumber);
 
-    if (specialCaseChar.checked) functionArr.push(getSymbols());
+    if (specialCaseChar.checked) functionArr.push(getSymbols);
 
+    console.log("compulsory");
     // compulsory additions
+
+    console.log(functionArr);
     for (let i = 0; i < functionArr.length; i++) {
-        passowrd += functionArr[i];
+        var ll = functionArr[i]();
+        console.log("kya generate huaa " + ll);
+        passowrd += ll;
     }
 
+    // function arr
+    console.log("bacha huaa");
     // compulsory additions
     for (let i = 0; i < currentPasswordLength - functionArr.length; i++) {
         var index = getRandomInt(0, functionArr.length);
-
-        passowrd += functionArr[index];
+        console.log("bacha huaa index of function " + index);
+        var qq = functionArr[index]();
+        console.log(" generate huaa " + qq);
+        passowrd += qq;
     }
 
     // shuffel
@@ -193,7 +210,22 @@ generateBtn.addEventListener("click", () => {
     const password = passowrd;
     const strength = calculatePasswordStrength(password);
     console.log(`Password strength: ${strength.label}`);
-    console.log(`Strength score: ${strength.score}`);
-    
+    console.log(`Strength score: ${strength.score * 100}`);
+
+    var abc = strength.score * 100;
+
+    strengthPb.value = abc
+    // progressBarValue.style.backgroundColor = "blue";
     console.log("password is " + passowrd);
+
+    if (abc == 100) {
+        strengthPb.style.setProperty("--webkit-progress-value-background", "blue");
+    } else if (abc >= 60) {
+        strengthPb.style.setProperty("--webkit-progress-value-background", "greenyellow");
+    } else if (abc >= 30) {
+        strengthPb.style.setProperty("--webkit-progress-value-background", "lightsalmon");
+    } else {
+        strengthPb.style.setProperty("--webkit-progress-value-background", "crimson");
+    }
+    
 });

@@ -15,15 +15,20 @@
             <div class="password-generator-container">
                 <h1>Password Generator</h1>
 
-                <div class="password">
-                    <input  type="text" readonly placeholder="Password" id="password-genrated"></input>
-
-                    <span id="copy-message"></span>
-                    <img src="./img/copy-regular.svg" alt="" width="20"  id="copy-btn" />
-                </div>
-
+                
                 
                 <div class="password-setting-box">
+                    
+                    <div class="password">
+                        <input  type="text" readonly placeholder="Password" id="password-genrated"></input>
+    
+                        <span id="copy-message"></span>
+                        <img src="./img/copy-regular.svg" alt="" width="20"  id="copy-btn" />
+                    </div>
+                    
+                    <h2>Score</h2>
+
+                    <progress id="strength" value="0" max="100"> </progress>
 
                     <!-- length slider  -->
                     <div class="password-length">
@@ -59,7 +64,7 @@
 
                         <div class="checkbox">
                             <input type="checkbox" name="number" id="number" />
-                            <label for="numbers">Include Numbers</label>
+                            <label for="number">Include Numbers</label>
                         </div>
 
                         <div class="checkbox">
